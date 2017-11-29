@@ -50,6 +50,7 @@ export default {
   daySize: nonNegativeInteger,
   isRTL: PropTypes.bool,
   verticalHeight: nonNegativeInteger,
+  transitionDurationMS: nonNegativeInteger,
 
   // navigation related props
   navPrev: PropTypes.node,

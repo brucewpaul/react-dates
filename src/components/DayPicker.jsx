@@ -56,6 +56,7 @@ const propTypes = forbidExtraProps({
   daySize: nonNegativeInteger,
   isRTL: PropTypes.bool,
   verticalHeight: nonNegativeInteger,
+  transitionDurationMS: nonNegativeInteger,
 
   // navigation props
   navPrev: PropTypes.node,
@@ -102,6 +103,7 @@ export const defaultProps = {
   daySize: DAY_SIZE,
   isRTL: false,
   verticalHeight: null,
+  transitionDurationMS: undefined,
 
   // navigation props
   navPrev: null,
@@ -688,6 +690,7 @@ class DayPicker extends React.Component {
       phrases,
       verticalHeight,
       dayAriaLabelFormat,
+      transitionDurationMS,
     } = this.props;
 
     const numOfWeekHeaders = this.isVertical() ? 1 : numberOfMonths;
@@ -808,6 +811,7 @@ class DayPicker extends React.Component {
                 phrases={phrases}
                 isRTL={isRTL}
                 dayAriaLabelFormat={dayAriaLabelFormat}
+                transitionDurationMS={transitionDurationMS}
               />
               {verticalScrollable && this.renderNavigation()}
             </div>

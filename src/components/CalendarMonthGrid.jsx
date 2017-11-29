@@ -50,6 +50,7 @@ const propTypes = forbidExtraProps({
   firstDayOfWeek: DayOfWeekShape,
   setCalendarMonthHeights: PropTypes.func,
   isRTL: PropTypes.bool,
+  transitionDurationMS: nonNegativeInteger,
 
   // i18n
   monthFormat: PropTypes.string,
@@ -78,6 +79,7 @@ const defaultProps = {
   firstDayOfWeek: null,
   setCalendarMonthHeights() {},
   isRTL: false,
+  transitionDurationMS: 200,
 
   // i18n
   monthFormat: 'MMMM YYYY', // english locale
@@ -166,11 +168,17 @@ class CalendarMonthGrid extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isAnimating, onMonthTransitionEnd, setCalendarMonthHeights } = this.props;
+    const {
+      isAnimating,
+      transitionDurationMS,
+      onMonthTransitionEnd,
+      setCalendarMonthHeights,
+    } = this.props;
 
     // For IE9, immediately call onMonthTransitionEnd instead of
-    // waiting for the animation to complete
-    if (!this.isTransitionEndSupported && isAnimating) {
+    // waiting for the animation to complete. Similarly, if transitionDurationMS
+    // is set to 0, also immediately invoke the onMonthTransitionEnd callback
+    if ((!this.isTransitionEndSupported || !transitionDurationMS) && isAnimating) {
       onMonthTransitionEnd();
     }
 
@@ -232,6 +240,7 @@ class CalendarMonthGrid extends React.Component {
       styles,
       phrases,
       dayAriaLabelFormat,
+      transitionDurationMS,
     } = this.props;
 
     const { months } = this.state;
@@ -253,8 +262,8 @@ class CalendarMonthGrid extends React.Component {
           isVertical && styles.CalendarMonthGrid__vertical,
           isVerticalScrollable && styles.CalendarMonthGrid__vertical_scrollable,
           isAnimating && styles.CalendarMonthGrid__animating,
-          isAnimating && {
-            transition: 'transform 0.2s ease-in-out',
+          isAnimating && transitionDurationMS && {
+            transition: `transform ${transitionDurationMS}ms ease-in-out`,
           },
           {
             ...getTransformStyles(transformValue),
