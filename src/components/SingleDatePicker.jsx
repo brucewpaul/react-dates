@@ -319,7 +319,7 @@ class SingleDatePicker extends React.Component {
 
     if (withPortal || withFullScreenPortal) {
       return (
-        <Portal isOpened>
+        <Portal>
           {this.renderDayPicker()}
         </Portal>
       );
